@@ -1,4 +1,4 @@
-export const DB_NAME = "internalPracticalDB"
+export const DB_NAME = "libraryManagementSystem"
 
 export const ACCESS_TOKEN_EXPIRY = "15m"
 export const REFRESH_TOKEN_EXPIRY = "7d" 

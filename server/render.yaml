@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: web-wizard-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false  # You'll need to set this in Render dashboard
+      - key: ACCESS_TOKEN_SECRET
+        sync: false  # You'll need to set this in Render dashboard
+      - key: REFRESH_TOKEN_SECRET
+        sync: false  # You'll need to set this in Render dashboard
+      - key: FRONTEND_URL
+        sync: false  # You'll need to set this in Render dashboard

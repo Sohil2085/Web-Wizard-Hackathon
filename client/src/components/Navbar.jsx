@@ -41,7 +41,7 @@ const Navbar = ({ showLoginButton = true }) => {
           {/* Navigation Links */}
           <nav className="hidden md:flex space-x-8">
             <Link to="/home" className="hover:text-blue-200 transition-colors">Home</Link>
-            <a href="#" className="hover:text-blue-200 transition-colors">Browse Books</a>
+            <Link to="/browse-books" className="hover:text-blue-200 transition-colors">Browse Books</Link>
             <a href="#" className="hover:text-blue-200 transition-colors">Announcements</a>
           </nav>
 

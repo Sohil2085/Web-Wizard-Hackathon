@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
 import HomePage from './components/HomePage';
+import BrowseBooks from './components/BrowseBooks';
 import AdminDashboard from './components/AdminDashboard';
 import ManageUsers from './components/ManageUsers';
 import './App.css';
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<HomePage />} />
+          <Route path="/browse-books" element={<BrowseBooks />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
