@@ -1,8 +1,11 @@
 import axios from 'axios';
 
+// Get API base URL from environment variables
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/v1',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -10,7 +13,7 @@ const api = axios.create({
 
 // Create separate axios instance for user management
 const userApi = axios.create({
-  baseURL: 'http://localhost:8000/api/v1/users',
+  baseURL: `${API_BASE_URL}/users`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -18,7 +21,7 @@ const userApi = axios.create({
 
 // Create separate axios instance for student operations
 const studentApi = axios.create({
-  baseURL: 'http://localhost:8000/api/v1/students',
+  baseURL: `${API_BASE_URL}/students`,
   headers: {
     'Content-Type': 'application/json',
   },
