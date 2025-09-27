@@ -10,7 +10,7 @@ This guide will help you deploy your backend application to Render.
 
 ## Step 1: Prepare Your Environment Variables
 
-Before deploying, you need to set up the following environment variables in Render:
+The application now automatically detects the environment and configures CORS accordingly. However, you can still set these environment variables for custom configuration:
 
 ### Required Environment Variables:
 
@@ -26,7 +26,7 @@ Before deploying, you need to set up the following environment variables in Rend
    - Generate a different strong random string (at least 32 characters)
    - Example: `your-super-secure-refresh-token-secret-here`
 
-4. **FRONTEND_URL**: Your frontend application URL
+4. **FRONTEND_URL**: Your frontend application URL (Optional - auto-detected)
    - If deploying frontend to Vercel: `https://your-frontend-app.vercel.app`
    - If deploying frontend to Netlify: `https://your-frontend-app.netlify.app`
    - If deploying frontend to Render: `https://your-frontend-app.onrender.com`
@@ -36,6 +36,20 @@ Before deploying, you need to set up the following environment variables in Rend
 
 - **PORT**: Usually set automatically by Render (default: 10000)
 - **NODE_ENV**: Set to `production` (already configured in render.yaml)
+
+## Automatic Environment Detection
+
+The application now includes automatic environment detection:
+
+### Backend Features:
+- **Auto CORS Configuration**: Automatically allows common development and production origins
+- **Environment Logging**: Logs environment information for debugging
+- **Smart Origin Detection**: Supports localhost, Vercel, Netlify, and Render deployments
+
+### Frontend Features:
+- **Auto API URL Detection**: Automatically uses localhost for development, production URL for deployment
+- **Environment Logging**: Logs environment information in development mode
+- **Smart URL Resolution**: Detects deployment platform and uses appropriate backend URL
 
 ## Step 2: Deploy to Render
 

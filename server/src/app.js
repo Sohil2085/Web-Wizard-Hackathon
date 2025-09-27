@@ -1,16 +1,15 @@
 import express from "express"
 import cookieParser from "cookie-parser"
 import cors from "cors"
-
+import { getAllowedOrigins, logEnvironmentInfo } from "./utils/environment.js"
 
 const app = express()
 
-// Configure CORS to allow multiple origins
-const allowedOrigins = [
-  "http://localhost:5173",  // Local development
-  "http://localhost:3000",  // Alternative local port
-  process.env.FRONTEND_URL  // Production frontend URL
-].filter(Boolean); // Remove any undefined values
+// Get allowed origins using environment utility
+const allowedOrigins = getAllowedOrigins();
+
+// Log environment info for debugging
+logEnvironmentInfo();
 
 app.use(
   cors({
@@ -18,10 +17,13 @@ app.use(
       // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
       
+      // Check if origin is in allowed list
       if (allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
+        // Log the blocked origin for debugging
         console.log('CORS blocked origin:', origin);
+        console.log('Allowed origins:', allowedOrigins);
         callback(new Error('Not allowed by CORS'));
       }
     },
