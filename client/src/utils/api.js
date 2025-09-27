@@ -7,6 +7,8 @@ const API_BASE_URL = getApiBaseUrl();
 // Log environment info for debugging (only in development)
 if (import.meta.env.DEV) {
   logEnvironmentInfo();
+  // Import test utilities for debugging
+  import('./apiTest.js');
 }
 
 // Create axios instance with base configuration
@@ -141,19 +143,19 @@ export const apiRequest = async (url, method = 'GET', data = null) => {
 export const authAPI = {
   // Register user
   register: async (userData) => {
-    const response = await api.post('/users/register', userData);
+    const response = await userApi.post('/register', userData);
     return response.data;
   },
 
   // Login user
   login: async (credentials) => {
-    const response = await api.post('/users/login', credentials);
+    const response = await userApi.post('/login', credentials);
     return response.data;
   },
 
   // Logout user
   logout: async () => {
-    const response = await api.post('/users/logout');
+    const response = await userApi.post('/logout');
     return response.data;
   },
 };
