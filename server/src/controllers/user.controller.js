@@ -46,7 +46,7 @@ const registerUser = asyncHandler(async (req, res) => {
     // Set cookies
     const options = {
         httpOnly: true,
-        secure: true
+        secure: process.env.NODE_ENV === 'production' // Only secure in production
     };
 
     return res
@@ -96,7 +96,7 @@ const loginUser = asyncHandler(async (req, res) => {
     // Set cookies
     const options = {
         httpOnly: true,
-        secure: true
+        secure: process.env.NODE_ENV === 'production' // Only secure in production
     };
 
     return res
