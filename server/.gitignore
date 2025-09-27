@@ -1,0 +1,16 @@
+# Node modules
+node_modules/
+
+# Lock files
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+
+# Build/output directories (optional)
+dist/
+build/
+
+# Constants or config files you don't want in repo
+server/src/constants.js

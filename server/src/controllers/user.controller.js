@@ -35,9 +35,35 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new apiError("User creation failed", 400);
     }
 
-    return res.status(201).json(
-        new apiResponse(200, createdUser, "User Registered Successfully")
-    );
+    // Generate tokens for new user
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    // Save refresh token to user
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    // Set cookies
+    const options = {
+        httpOnly: true,
+        secure: true
+    };
+
+    return res
+        .status(201)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new apiResponse(
+                201,
+                {
+                    user: createdUser,
+                    accessToken,
+                    refreshToken
+                },
+                "User Registered Successfully"
+            )
+        );
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -57,12 +83,101 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new apiError("Invalid credentials", 401);
     }
 
-    // You can generate tokens here if needed
+    // Generate access and refresh tokens
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    // Save refresh token to user
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
     const userData = await User.findById(user._id).select("-password -refreshToken");
 
-    return res.status(200).json(
-        new apiResponse(200, userData, "Login successful")
-    );
+    // Set cookies
+    const options = {
+        httpOnly: true,
+        secure: true
+    };
+
+    return res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new apiResponse(
+                200,
+                {
+                    user: userData,
+                    accessToken,
+                    refreshToken
+                },
+                "Login successful"
+            )
+        );
 });
 
-export { registerUser, loginUser }
+
+
+
+const logoutUser = asyncHandler(async (req, res) => {
+    // Clear refresh token from user
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $unset: {
+                refreshToken: 1
+            }
+        }
+    );
+
+    // Clear cookies
+    const options = {
+        httpOnly: true,
+        secure: true
+    };
+
+    return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json(
+            new apiResponse(200, {}, "User logged out successfully")
+        );
+});
+
+const getAllUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({}).select("-password -refreshToken");
+    
+    return res
+        .status(200)
+        .json(
+            new apiResponse(
+                200,
+                { users },
+                "Users fetched successfully"
+            )
+        );
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+    
+    const user = await User.findById(userId);
+    if (!user) {
+        throw new apiError("User not found", 404);
+    }
+    
+    await User.findByIdAndDelete(userId);
+    
+    return res
+        .status(200)
+        .json(
+            new apiResponse(
+                200,
+                {},
+                "User deleted successfully"
+            )
+        );
+});
+
+export { registerUser, loginUser, logoutUser, getAllUsers, deleteUser }
