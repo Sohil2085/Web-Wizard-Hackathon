@@ -1,39 +1,21 @@
 import axios from 'axios';
-import { getApiBaseUrl, logEnvironmentInfo } from './environment.js';
-
-// Get API base URL using environment utility
-const API_BASE_URL = getApiBaseUrl();
-
-// Log environment info for debugging (only in development)
-if (import.meta.env.DEV) {
-  logEnvironmentInfo();
-  // Import test utilities for debugging
-  import('./apiTest.js');
-}
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: import.meta.env.VITE_API_BASE_URL + "/api/v1",
+  headers: { "Content-Type": "application/json" },
 });
 
-// Create separate axios instance for user management
 const userApi = axios.create({
-  baseURL: `${API_BASE_URL}/users`,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: import.meta.env.VITE_API_BASE_URL + "/api/v1/users",
+  headers: { "Content-Type": "application/json" },
 });
 
-// Create separate axios instance for student operations
 const studentApi = axios.create({
-  baseURL: `${API_BASE_URL}/students`,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: import.meta.env.VITE_API_BASE_URL + "/api/v1/students",
+  headers: { "Content-Type": "application/json" },
 });
+
 
 // Request interceptor to add auth token
 api.interceptors.request.use(
@@ -143,19 +125,19 @@ export const apiRequest = async (url, method = 'GET', data = null) => {
 export const authAPI = {
   // Register user
   register: async (userData) => {
-    const response = await userApi.post('/register', userData);
+    const response = await api.post('/users/register', userData);
     return response.data;
   },
 
   // Login user
   login: async (credentials) => {
-    const response = await userApi.post('/login', credentials);
+    const response = await api.post('/users/login', credentials);
     return response.data;
   },
 
   // Logout user
   logout: async () => {
-    const response = await userApi.post('/logout');
+    const response = await api.post('/users/logout');
     return response.data;
   },
 };
