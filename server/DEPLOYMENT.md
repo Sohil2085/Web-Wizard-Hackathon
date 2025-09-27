@@ -27,6 +27,8 @@ Before deploying, you need to set up the following environment variables in Rend
    - Example: `your-super-secure-refresh-token-secret-here`
 
 4. **FRONTEND_URL**: Your frontend application URL
+   - If deploying frontend to Vercel: `https://your-frontend-app.vercel.app`
+   - If deploying frontend to Netlify: `https://your-frontend-app.netlify.app`
    - If deploying frontend to Render: `https://your-frontend-app.onrender.com`
    - If using a custom domain: `https://yourdomain.com`
 
@@ -91,7 +93,10 @@ const API_BASE_URL = 'https://your-backend-app.onrender.com/api/v1';
 
 1. **Build Failures**: Check that all dependencies are in `package.json`
 2. **Database Connection Issues**: Verify your MongoDB URI is correct
-3. **CORS Errors**: Ensure `FRONTEND_URL` is set correctly
+3. **CORS Errors**: 
+   - Ensure `FRONTEND_URL` is set correctly in your backend environment variables
+   - The backend now supports multiple origins (localhost for development + production URL)
+   - Check that your frontend URL matches exactly (including https/http and trailing slashes)
 4. **Health Check Failures**: Verify the `/health` endpoint is accessible
 
 ### Logs:

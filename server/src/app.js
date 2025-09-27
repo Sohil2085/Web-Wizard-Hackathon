@@ -5,9 +5,26 @@ import cors from "cors"
 
 const app = express()
 
+// Configure CORS to allow multiple origins
+const allowedOrigins = [
+  "http://localhost:5173",  // Local development
+  "http://localhost:3000",  // Alternative local port
+  process.env.FRONTEND_URL  // Production frontend URL
+].filter(Boolean); // Remove any undefined values
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",  // allow your React frontend
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        console.log('CORS blocked origin:', origin);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // only if you're using cookies / sessions
