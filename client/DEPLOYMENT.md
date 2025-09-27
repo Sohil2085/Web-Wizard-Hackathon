@@ -10,11 +10,11 @@ This guide will help you deploy your React frontend application to various hosti
 
 ## Environment Variables
 
-Before deploying, you need to set up environment variables for your frontend:
+The frontend now automatically detects the environment and configures API URLs accordingly. However, you can still set these environment variables for custom configuration:
 
 ### Required Environment Variables:
 
-1. **VITE_API_BASE_URL**: Your deployed backend API URL
+1. **VITE_API_BASE_URL**: Your deployed backend API URL (Optional - auto-detected)
    - For local development: `http://localhost:8000/api/v1`
    - For production: `https://your-backend-app.onrender.com/api/v1`
 
@@ -22,6 +22,22 @@ Before deploying, you need to set up environment variables for your frontend:
 
 - **VITE_APP_NAME**: Your application name (default: "Web Wizard")
 - **VITE_APP_VERSION**: Your application version (default: "1.0.0")
+
+## Automatic Environment Detection
+
+The frontend now includes automatic environment detection:
+
+### Features:
+- **Auto API URL Detection**: Automatically uses localhost for development, production URL for deployment
+- **Environment Logging**: Logs environment information in development mode
+- **Smart URL Resolution**: Detects deployment platform and uses appropriate backend URL
+- **Platform Detection**: Automatically detects Vercel, Netlify, and other deployment platforms
+
+### How It Works:
+1. **Development**: Automatically uses `http://localhost:8000/api/v1`
+2. **Vercel/Netlify**: Automatically uses `https://web-wizard-hackathon-1.onrender.com/api/v1`
+3. **Custom Domains**: Uses `api.yourdomain.com` pattern
+4. **Environment Override**: `VITE_API_BASE_URL` takes precedence if set
 
 ## Deployment Options
 
